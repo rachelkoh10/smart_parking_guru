@@ -1,5 +1,5 @@
 {
-  "name": "SG Smart Parking",
+  "name": "Parking GURU",
   "description": "Singapore real-time smart parking recommendation engine, cost calculator, navigation handoff, and F&B deal finder.",
   "requestFramePermissions": ["geolocation"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

@@ -31,12 +31,16 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
         {/* Brand & Market */}
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-emerald-500/20">
-            <Navigation className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-slate-950 font-black text-base shadow-lg shadow-emerald-500/20 ring-1 ring-emerald-400/50">
+            <span className="font-black tracking-tighter text-sm">P</span>
+            <Sparkles className="w-3.5 h-3.5 text-slate-950 -ml-1 stroke-[2.5]" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <h1 className="font-extrabold text-base tracking-tight text-white">ParkPoint</h1>
+              <h1 className="font-extrabold text-base tracking-tight text-white flex items-center gap-1">
+                <span>Parking</span>
+                <span className="text-emerald-400 font-black tracking-wide">GURU</span>
+              </h1>
               <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-600/90 text-white tracking-wider">
                 SG 🇸🇬
               </span>
