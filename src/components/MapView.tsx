@@ -6,7 +6,7 @@
 import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import { Carpark, Destination } from '../types';
-import { Navigation, Compass, MapPin, ExternalLink, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Navigation, Compass, MapPin, ExternalLink, ArrowRight, CheckCircle2, LocateFixed } from 'lucide-react';
 
 interface MapViewProps {
   destination: Destination;
@@ -16,6 +16,8 @@ interface MapViewProps {
   onOpenDetailModal: (carpark: Carpark) => void;
   onOpenNavigateModal: (carpark: Carpark) => void;
   userLocation: { latitude: number; longitude: number } | null;
+  onUseCurrentLocation?: () => void;
+  isLocating?: boolean;
 }
 
 export const MapView: React.FC<MapViewProps> = ({
@@ -26,6 +28,8 @@ export const MapView: React.FC<MapViewProps> = ({
   onOpenDetailModal,
   onOpenNavigateModal,
   userLocation,
+  onUseCurrentLocation,
+  isLocating,
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -153,6 +157,20 @@ export const MapView: React.FC<MapViewProps> = ({
           <span>Full</span>
         </div>
       </div>
+
+      {/* GPS Recenter Floating Action Button */}
+      {onUseCurrentLocation && (
+        <button
+          type="button"
+          onClick={onUseCurrentLocation}
+          disabled={isLocating}
+          title="Center map on my GPS location"
+          className="absolute top-14 left-3 z-10 bg-slate-900/95 hover:bg-emerald-500 hover:text-slate-950 backdrop-blur-md px-3 py-2 rounded-xl border border-emerald-500/50 text-emerald-400 font-extrabold text-xs shadow-xl flex items-center gap-1.5 transition-all group"
+        >
+          <LocateFixed className={`w-4 h-4 text-emerald-400 group-hover:text-slate-950 ${isLocating ? 'animate-spin' : ''}`} />
+          <span>{isLocating ? 'Locating...' : 'Center GPS'}</span>
+        </button>
+      )}
 
       {/* Selected Carpark Bottom Sheet Preview Card */}
       {selectedCarpark && (

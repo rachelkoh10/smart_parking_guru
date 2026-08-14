@@ -34,12 +34,41 @@ export default function App() {
   const [preferenceMode, setPreferenceMode] = useState<UserPreferenceMode>('overall');
   const [activeTab, setActiveTab] = useState<NavTab>('map');
 
-  // GPS Location
-  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>({
-    latitude: 1.2935,
-    longitude: 103.8572,
-  });
+  // GPS Location - Initialize with null to detect acquired GPS location
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [isLocating, setIsLocating] = useState(false);
+
+  // Auto-acquire user's current GPS location on app startup
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      setIsLocating(true);
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const loc = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
+          setUserLocation(loc);
+          setIsLocating(false);
+          // Set map destination directly to user's live GPS coordinates
+          setCurrentDestination({
+            id: 'current-gps-dest',
+            name: 'My Current Location 📍',
+            category: 'attraction',
+            address: 'Live GPS Location, Singapore',
+            postalCode: '000000',
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+            popularCarparkIds: [],
+          });
+        },
+        (err) => {
+          console.warn('Auto GPS locate notice:', err);
+          setIsLocating(false);
+          // Fallback to central default if GPS permission denied or disabled
+          setUserLocation({ latitude: 1.2935, longitude: 103.8572 });
+        },
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 10000 }
+      );
+    }
+  }, []);
 
   // Saved & Recent state (Local Storage persistence)
   const [savedCarparks, setSavedCarparks] = useState<Carpark[]>(() => {
@@ -270,6 +299,8 @@ export default function App() {
               onOpenDetailModal={setDetailModalCarpark}
               onOpenNavigateModal={setNavigateModalCarpark}
               userLocation={userLocation}
+              onUseCurrentLocation={handleUseCurrentLocation}
+              isLocating={isLocating}
             />
           </div>
         )}
